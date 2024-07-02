@@ -1,0 +1,22 @@
+from debian:bookworm-slim
+
+run apt-get update && \
+    apt-get install -y wget xz-utils
+
+arg ZIGUP_BIN_PATH=/root/.zbin
+arg ZIG_VERSION=0.13.0
+arg TARGET_PATH=/root/target
+
+workdir /root
+
+run mkdir $ZIGUP_BIN_PATH
+
+env PATH $PATH:$ZIGUP_BIN_PATH
+
+run wget https://github.com/marler8997/zigup/releases/download/v2024_05_05/zigup-x86_64-linux.tar.gz && \
+    tar xvf zigup-x86_64-linux.tar.gz && \
+    mv zigup $ZIGUP_BIN_PATH
+
+run zigup $ZIG_VERSION
+
+workdir $TARGET_PATH
